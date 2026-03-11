@@ -1,0 +1,22 @@
+﻿  glad.c
+  glslprogram.cpp
+  glutils.cpp
+  objmesh.cpp
+C:\Users\ja990\OneDrive\Documents\GitHub\COMP3015CW1\CW1\helper\objmesh.cpp(193,41): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ja990\OneDrive\Documents\GitHub\COMP3015CW1\CW1\helper\objmesh.cpp(199,48): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ja990\OneDrive\Documents\GitHub\COMP3015CW1\CW1\helper\objmesh.cpp(203,43): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+  plane.cpp
+  skybox.cpp
+  texture.cpp
+  trianglemesh.cpp
+  main.cpp
+  scenebasic_uniform.cpp
+C:\Users\ja990\OneDrive\Documents\GitHub\COMP3015CW1\CW1\scenebasic_uniform.cpp(384,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ja990\OneDrive\Documents\GitHub\COMP3015CW1\CW1\scenebasic_uniform.cpp(439,34): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ja990\OneDrive\Documents\GitHub\COMP3015CW1\CW1\scenebasic_uniform.cpp(440,36): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 1384 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Project_Template.vcxproj -> C:\Users\ja990\OneDrive\Documents\GitHub\COMP3015CW1\CW1\x64\Release\Project_Template.exe
