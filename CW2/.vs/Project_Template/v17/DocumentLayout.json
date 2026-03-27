@@ -1,21 +1,25 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\",
+  "WorkspaceRootPath": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\scenebasic_uniform.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:scenebasic_uniform.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\basic_uniform.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:shader\\basic_uniform.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\scenebasic_uniform.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\scenebasic_uniform.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:scenebasic_uniform.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\helper\\scenerunner.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\scenebasic_uniform.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:scenebasic_uniform.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\helper\\scenerunner.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:helper\\scenerunner.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\helper\\scene.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\helper\\scene.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:helper\\scene.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -26,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,37 +46,48 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
+              "Title": "basic_uniform.frag",
+              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\basic_uniform.frag",
+              "RelativeDocumentMoniker": "shader\\basic_uniform.frag",
+              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\basic_uniform.frag",
+              "RelativeToolTip": "shader\\basic_uniform.frag",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-23T12:37:16.524Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "scene.h",
-              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\helper\\scene.h",
+              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\helper\\scene.h",
               "RelativeDocumentMoniker": "helper\\scene.h",
-              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\helper\\scene.h",
+              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\helper\\scene.h",
               "RelativeToolTip": "helper\\scene.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-03-11T15:29:23.281Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-11T15:29:23.281Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "scenerunner.h",
+              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\helper\\scenerunner.h",
+              "RelativeDocumentMoniker": "helper\\scenerunner.h",
+              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\helper\\scenerunner.h",
+              "RelativeToolTip": "helper\\scenerunner.h",
+              "ViewState": "AgIAAJkAAAAAAAAAAAAAwKcAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-03-11T15:27:15.484Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "scenerunner.h",
-              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\helper\\scenerunner.h",
-              "RelativeDocumentMoniker": "helper\\scenerunner.h",
-              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\helper\\scenerunner.h",
-              "RelativeToolTip": "helper\\scenerunner.h",
-              "ViewState": "AgIAAJkAAAAAAAAAAAAAwKcAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-03-11T15:27:15.484Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
               "Title": "scenebasic_uniform.h",
-              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\scenebasic_uniform.h",
+              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\scenebasic_uniform.h",
               "RelativeDocumentMoniker": "scenebasic_uniform.h",
-              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\scenebasic_uniform.h",
+              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\scenebasic_uniform.h",
               "RelativeToolTip": "scenebasic_uniform.h",
               "ViewState": "AgIAABIAAAAAAAAAAAAAADMAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
@@ -83,11 +98,11 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "scenebasic_uniform.cpp",
-              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\scenebasic_uniform.cpp",
+              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\scenebasic_uniform.cpp",
               "RelativeDocumentMoniker": "scenebasic_uniform.cpp",
-              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\UNI\\COMP3015\\CW2\\scenebasic_uniform.cpp",
+              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\scenebasic_uniform.cpp",
               "RelativeToolTip": "scenebasic_uniform.cpp",
-              "ViewState": "AgIAANMBAAAAAAAAAAAwwP8BAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAOQAAAAAAAAAAAAowOwAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-03-11T14:32:37.446Z",
               "EditorCaption": ""
