@@ -15,12 +15,16 @@ using std::endl;
 #include <sstream>
 #include "helper/texture.h"
 #include <GLFW/glfw3.h>
+
 using glm::vec3;
 using glm::mat4;
 
-SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f,10.0f,100,100) ,angle(0.0f),tPrev(0.0f),rotSpeed(glm::pi<float>()/8.0f), sky(100.0f)
+SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f,10.0f,100,100) ,angle(0.0f),tPrev(0.0f),rotSpeed(glm::pi<float>()/8.0f), sky(100.0f),textQuad(1600,800)
 {
-    mesh = ObjMesh::load("media/Statue.obj", true,true);  
+    mesh = ObjMesh::load("media/Statue.obj", true,true); 
+    gameManager = new GameManager();
+
+    
 }
 
 
@@ -174,6 +178,39 @@ void SceneBasic_Uniform::initScene()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     glGenerateMipmap(GL_TEXTURE_2D);
+
+    
+
+    if (FT_Init_FreeType(&ft)) {
+        std::cout << "ERROR: Could not initialize FreeType" << std::endl;
+    }
+    else {
+        std::cout << "FreeType initialized successfully!" << std::endl;
+    }
+    if (FT_New_Face(ft, "C:/Windows/Fonts/Arial.ttf", 0, &face)) {
+        std::cout << "ERROR: Could not load font" << std::endl;
+    }
+    else {
+        std::cout << "Font loaded successfully!" << std::endl;
+    }
+    FT_Set_Pixel_Sizes(face, 0, 72);
+
+
+    glGenTextures(1, &textTex);
+    glBindTexture(GL_TEXTURE_2D, textTex);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RED, face->glyph->bitmap.width,face->glyph->bitmap.rows,0,GL_RED,GL_UNSIGNED_BYTE,face->glyph->bitmap.buffer);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    float xpos = 100; // screen X
+    float ypos = 100; // screen Y
+    float w = face->glyph->bitmap.width;
+    float h = face->glyph->bitmap.rows;
+
+    
 }
 
 void SceneBasic_Uniform::compile()
@@ -197,6 +234,10 @@ void SceneBasic_Uniform::compile()
         wireFrameProg.compileShader("shader/wireframe.frag");
         wireFrameProg.link();
 
+        textShader.compileShader("shader/text.vert");
+        textShader.compileShader("shader/text.frag");
+        textShader.link();
+
         GLint loc = glGetUniformLocation(graffitiProg.getHandle(), "ModelViewMatrix");
         std::cout << "ModelViewMatrix location = " << loc << std::endl;
 	} catch (GLSLProgramException &e) {
@@ -207,6 +248,7 @@ void SceneBasic_Uniform::compile()
 
 void SceneBasic_Uniform::update( float t )
 {
+    buttonProximity = false;
     if (animating()) {
         lightAngle += 1.0f * deltaTime;
 
@@ -214,7 +256,17 @@ void SceneBasic_Uniform::update( float t )
         topLightPos.z = 0.0f + 2.5f * sinf(lightAngle);
         topLightPos.y = 1.0f;
     }
-    
+
+    for (int i = 0; i < buttons.size();i++) {
+        if (buttons[i].proximityCheck(position)) {
+            buttonProximity = true;
+        }
+    }
+    gameManager->puzzleCheck();
+
+    if (gameManager->state == Solved) {
+        std::cout << "Puzzle Solved!" << std::endl;
+    }
 }
 
 void SceneBasic_Uniform::render()
@@ -427,6 +479,29 @@ void SceneBasic_Uniform::render()
         plane.render();
     }
 
+    // --- switch to orthographic projection for 2D text (Core OpenGL) ---
+    glm::mat4 orthoProj = glm::ortho(0.0f, float(width), 0.0f, float(height));
+
+    // Text model matrix: position your text
+    glm::mat4 textModel = glm::translate(glm::mat4(1.0f), glm::vec3(50.0f, 50.0f, 0.0f));
+    glm::mat4 textMVP = orthoProj * textModel;
+
+
+    //Text UI
+    if (buttonProximity) {
+        glDisable(GL_DEPTH_TEST);
+        renderText("E", 775.0f, 50.0f, 0.002f);
+        textQuad.render();
+        glEnable(GL_DEPTH_TEST);
+    }
+
+
+    //check if puzzle is solved
+    gameManager->puzzleCheck();
+    if (gameManager->state == Solved) {
+        //run particle fountain
+    }
+
     float currentTime = glfwGetTime();
     deltaTime = currentTime - lastTime;
     lastTime = currentTime;
@@ -440,7 +515,7 @@ void SceneBasic_Uniform::resize(int w, int h)
     height = h;
     projection = glm::perspective(glm::radians(70.0f), (float)w / h, 0.3f, 100.0f);
 
-    
+    textQuad = TextQuad(w, h);
 
 }
 
@@ -456,6 +531,18 @@ void SceneBasic_Uniform::setMatrices() {
 void SceneBasic_Uniform::toggleLight(int index) {
     if (index >= 0 && index < 5) {
         toggles[index] = !toggles[index];
+
+        if (index <= 3) {
+            gameManager->lightToggles[index] = toggles[index];
+        }
+    }
+}
+void SceneBasic_Uniform::checkButtonInput()
+{
+    for (int i = 0; i < buttons.size();i++) {
+        if (buttons[i].proximityCheck(position)) {
+            toggleLight(i);
+        }
     }
 }
 void SceneBasic_Uniform::handleInput(int key) {
@@ -534,4 +621,41 @@ void SceneBasic_Uniform::setupFBO() {
     glDrawBuffers(2, drawBuffers);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+}
+
+void SceneBasic_Uniform::renderText(const std::string& text, float x, float y, float scale)
+{
+    glUseProgram(textShader.getHandle());
+    glm::mat4 orthoProj = glm::ortho(0.0f, float(width), 0.0f, float(height));
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textTex);
+
+    for (char c : text) {
+        if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
+            std::cerr << "Failed to load Glyph " << c << "\n";
+            continue;
+        }
+
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED,
+            face->glyph->bitmap.width,
+            face->glyph->bitmap.rows,
+            0, GL_RED, GL_UNSIGNED_BYTE,
+            face->glyph->bitmap.buffer);
+
+        float xpos = x + face->glyph->bitmap_left * scale;
+        float ypos = y - (face->glyph->bitmap.rows - face->glyph->bitmap_top) * scale;
+        float w = face->glyph->bitmap.width * scale;
+        float h = face->glyph->bitmap.rows * scale;
+
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(xpos, ypos, 0.0f));
+        model = glm::scale(model, glm::vec3(w, h, 1.0f));
+        glm::mat4 mvp = orthoProj * model;
+        textShader.setUniform("MVP", mvp);
+        textShader.setUniform("textColor", glm::vec3(1.0f, 0.0f, 0.0f));
+        textQuad.render();
+
+        x += (face->glyph->advance.x >> 6) * scale;
+    }
 }

@@ -12,6 +12,7 @@ public:
     int height;
 
     virtual void toggleLight(int index) {};
+    virtual void checkButtonInput() {};
     virtual void toggleFog() {};
     virtual void toggleWireFrame() {};
     virtual void handleInput(int key) {};

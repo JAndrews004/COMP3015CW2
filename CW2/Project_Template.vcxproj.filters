@@ -48,14 +48,17 @@
     <ClCompile Include="helper\plane.cpp">
       <Filter>helper</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\Public\OpenGL\src\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="helper\texture.cpp">
       <Filter>helper</Filter>
     </ClCompile>
     <ClCompile Include="helper\skybox.cpp">
       <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Public\OpenGL\src\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +87,12 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="shader\wireframe.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader\text.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader\text.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>
@@ -133,5 +142,8 @@
     <ClInclude Include="helper\skybox.h">
       <Filter>helper</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="libs\freetype\lib\freetype.lib" />
   </ItemGroup>
 </Project>

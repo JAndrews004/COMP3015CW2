@@ -3,8 +3,8 @@
 #include <GLFW/glfw3.h>
 #include "glutils.h"
 
-#define WIN_WIDTH 800
-#define WIN_HEIGHT 600
+#define WIN_WIDTH 1600
+#define WIN_HEIGHT 800
 
 #include <map>
 #include <string>
@@ -30,6 +30,7 @@ public:
         // Select OpenGL 4.6
         glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
         glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 6 );
+
 #endif
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -130,25 +131,11 @@ private:
 			if (state == GLFW_PRESS)
 				scene.animate(!scene.animating());
 
-            static bool keyPressed[7] = { false, false, false, false, false,false,false };
+            static bool keyPressed[4] = { false, false, false, false };
 
-            int keys[5] = { GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3, GLFW_KEY_4 , GLFW_KEY_F };
+            
 
-            for (int i = 0; i < 5; i++)
-            {
-                int state = glfwGetKey(window, keys[i]);
-
-                if (state == GLFW_PRESS && !keyPressed[i])
-                {
-                    scene.toggleLight(i);
-                    keyPressed[i] = true;
-                }
-
-                if (state == GLFW_RELEASE)
-                {
-                    keyPressed[i] = false;
-                }
-            }
+            
             if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
             {
                 scene.handleInput(GLFW_KEY_W);
@@ -169,27 +156,52 @@ private:
 
             int fogState = glfwGetKey(window, GLFW_KEY_0);
 
-            if (fogState == GLFW_PRESS && !keyPressed[5])
+            if (fogState == GLFW_PRESS && !keyPressed[0])
             {
                 scene.toggleFog();
-                keyPressed[5] = true;
+                keyPressed[0] = true;
             }
 
             if (fogState == GLFW_RELEASE)
             {
-                keyPressed[5] = false;
+                keyPressed[0] = false;
             }
             int wireframeState = glfwGetKey(window, GLFW_KEY_Q);
 
-            if (wireframeState == GLFW_PRESS && !keyPressed[6])
+            if (wireframeState == GLFW_PRESS && !keyPressed[1])
             {
                 scene.toggleWireFrame();
-                keyPressed[6] = true;
+                keyPressed[1] = true;
             }
 
             if (wireframeState == GLFW_RELEASE)
             {
-                keyPressed[6] = false;
+                keyPressed[1] = false;
+            }
+
+
+            int buttonState = glfwGetKey(window, GLFW_KEY_E);
+            if (buttonState == GLFW_PRESS && !keyPressed[2])
+            {
+                scene.checkButtonInput();
+                keyPressed[2] = true;
+            }
+
+            if (buttonState == GLFW_RELEASE)
+            {
+                keyPressed[2] = false;
+            }
+
+            int torchState = glfwGetKey(window, GLFW_KEY_F);
+            if (torchState == GLFW_PRESS && !keyPressed[3])
+            {
+                scene.toggleLight(4);
+                keyPressed[3] = true;
+            }
+
+            if (torchState == GLFW_RELEASE)
+            {
+                keyPressed[3] = false;
             }
 
             double mouseX, mouseY;

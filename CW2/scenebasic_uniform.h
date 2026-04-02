@@ -2,7 +2,7 @@
 #define SCENEBASIC_UNIFORM_H
 
 #include "helper/scene.h"
-
+#include "GameManager.cpp"
 #include <glad/glad.h>
 #include "helper/glslprogram.h"
 #include <glm/gtc/matrix_transform.hpp>
@@ -12,13 +12,87 @@
 #include "helper/objmesh.h"
 #include "helper/skybox.h"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+struct TextQuad {
+    GLuint VAO, VBO;
+
+    TextQuad(float w, float h) {
+        float vertices[] = {
+            // pos(x,y,z)       // tex(u,v)
+            0.0f, 0.0f, 0.0f,  0.0f, 1.0f, // BL
+            w,    0.0f, 0.0f,  1.0f, 1.0f, // BR
+            0.0f, h,    0.0f,  0.0f, 0.0f, // TL
+
+            w,    0.0f, 0.0f,  1.0f, 1.0f, // BR
+            w,    h,    0.0f,  1.0f, 0.0f, // TR
+            0.0f, h,    0.0f,  0.0f, 0.0f  // TL
+        };
+
+
+        glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+    }
+
+    void render() {
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+    }
+};
+
+struct Button {
+    glm::vec3 position;
+    float triggerDistance;
+
+    Button(glm::vec3 pos, float dist) {
+        position = pos;
+        triggerDistance = dist;
+    }
+
+    bool proximityCheck(glm::vec3 playerPos) {
+        
+        float distance = (abs(position.x - playerPos.x) * abs(position.x - playerPos.x) + abs(position.z - playerPos.z) * abs(position.z - playerPos.z));
+        distance = sqrtf(distance);
+
+        if (distance <= triggerDistance) {
+            return true;
+        }
+
+        return false;
+
+    }
+};
+
 class SceneBasic_Uniform : public Scene
 {
 private:
+    GameManager* gameManager;
+
+    FT_Library ft;
+    FT_Face face;
+    GLuint textTex;
+    TextQuad textQuad;
+
     GLSLProgram prog;
     GLSLProgram skyboxProg;
     GLSLProgram graffitiProg;
     GLSLProgram wireFrameProg;
+    GLSLProgram textShader;
     glm::mat4 viewport;
 
 
@@ -61,9 +135,13 @@ private:
     GLuint statueTexID, statueNormID, blankMaskID, graffitiID;
     GLuint floorTexID, mossTexID, floorNormID, puddleMaskID;
 
+    bool buttonProximity = true;
+    std::vector<Button> buttons = { Button(glm::vec3(0.0f),0.5f),Button(glm::vec3(1.0f),0.5f),Button(glm::vec3(-1.0f),0.5f) ,Button(glm::vec3(1.0f,0.0f,-1.0f),0.5f) };
+
     void compile();
     void setMatrices();
     void setupFBO();
+    void renderText(const std::string& text, float x, float y, float scale);
 public:
     SceneBasic_Uniform();
 
@@ -72,6 +150,7 @@ public:
     void render();
     void resize(int, int);
     void toggleLight(int index) override;
+    void checkButtonInput() override;
     void handleInput(int key) override;
     void handleMouseInput(double mouseX, double mouseY) override;
     void toggleFog() override;
