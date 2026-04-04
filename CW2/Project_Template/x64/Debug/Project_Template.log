@@ -1,2 +1,10 @@
-﻿  GameManager.cpp
+﻿  scenebasic_uniform.cpp
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(226,13): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(227,13): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(596,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(610,28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(610,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(667,34): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(668,36): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(754,22): warning C4018: '<': signed/unsigned mismatch
   Project_Template.vcxproj -> C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\x64\Debug\Project_Template.exe

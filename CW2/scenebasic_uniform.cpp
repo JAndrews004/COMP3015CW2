@@ -19,7 +19,8 @@ using std::endl;
 using glm::vec3;
 using glm::mat4;
 
-SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f,10.0f,100,100) ,angle(0.0f),tPrev(0.0f),rotSpeed(glm::pi<float>()/8.0f), sky(100.0f),textQuad(1600,800)
+SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f,10.0f,100,100) ,angle(0.0f),tPrev(0.0f),rotSpeed(glm::pi<float>()/8.0f), sky(100.0f),textQuad(1600,800),
+            time(0),particleLifetime(8.5f), nParticles(800),emitterPos(1,0,0),emitterDir(0,3,-1)
 {
     mesh = ObjMesh::load("media/Statue.obj", true,true); 
     gameManager = new GameManager();
@@ -76,21 +77,36 @@ void SceneBasic_Uniform::initScene()
     prog.setUniform("Tex2", 2);
     prog.setUniform("puddleMask", 3);
 
-    prog.setUniform("Spot.L", lightL[4]);
-    prog.setUniform("Spot.La", lightLa[4]);
+    //prog.setUniform("Spot.L", lightL[4]);
+    //prog.setUniform("Spot.La", lightLa[4]);
     prog.setUniform("Spot.Exponent", 10.0f);
     prog.setUniform("Spot.Cutoff", glm::radians(30.0f));
 
+    /*
     graffitiProg.setUniform("Tex1", 0);
     graffitiProg.setUniform("Spot.L", lightL[4]);
     graffitiProg.setUniform("Spot.La", lightLa[4]);
     graffitiProg.setUniform("Spot.Exponent", 25.0f);
-    graffitiProg.setUniform("Spot.Cutoff", glm::radians(30.0f));
+    graffitiProg.setUniform("Spot.Cutoff", glm::radians(30.0f));*/
 
     angle = glm::radians(90.0f);
     cubeTexID = Texture::loadCubeMap("media/sky/sky");
 
+    //particle fountain
+    emitterAngle = glm::half_pi<float>();
+    initBuffers();
+    
+    particleTexID = Texture::loadTexture("media/bluewater.png");
 
+    particleShader.use();
+    particleShader.setUniform("ParticleTex",0);
+    particleShader.setUniform("ParticleLifetime",particleLifetime);
+    particleShader.setUniform("ParticleSize",0.01f);
+    particleShader.setUniform("Gravity",glm::vec3(0.0f,-0.2f,0.0f));
+    particleShader.setUniform("EmitterPos", emitterPos);
+
+    flatProg.use();
+    flatProg.setUniform("Colour", glm::vec4(0.2f, 0.2f, 0.8f, 1.0f));
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -215,39 +231,87 @@ void SceneBasic_Uniform::initScene()
 
 void SceneBasic_Uniform::compile()
 {
-	try {
-		prog.compileShader("shader/basic_uniform.vert");
-		prog.compileShader("shader/basic_uniform.frag");
-		prog.link();
-		prog.use();
-
+    try {
+        prog.compileShader("shader/basic_uniform.vert");
+        prog.compileShader("shader/basic_uniform.frag");
+        prog.link();
+        prog.use();
+        prog.printActiveUniforms();
+    }
+    catch (GLSLProgramException& e) {
+  
+        std::cerr << "[ERROR] Basic Uniform Shader: " << e.what() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    try {
         skyboxProg.compileShader("shader/skybox.vert");
         skyboxProg.compileShader("shader/skybox.frag");
         skyboxProg.link();
-
-        graffitiProg.compileShader("shader/graffiti.vert");
-        graffitiProg.compileShader("shader/graffiti.frag");
-        graffitiProg.link();
-
-        wireFrameProg.compileShader("shader/wireframe.vert");
-        wireFrameProg.compileShader("shader/wireframe.gs");
-        wireFrameProg.compileShader("shader/wireframe.frag");
-        wireFrameProg.link();
-
-        textShader.compileShader("shader/text.vert");
-        textShader.compileShader("shader/text.frag");
-        textShader.link();
-
-        GLint loc = glGetUniformLocation(graffitiProg.getHandle(), "ModelViewMatrix");
-        std::cout << "ModelViewMatrix location = " << loc << std::endl;
-	} catch (GLSLProgramException &e) {
-		cerr << e.what() << endl;
+        skyboxProg.printActiveUniforms();
+    }
+        catch (GLSLProgramException& e) {
+            std::cerr << "[ERROR] Skybox Shader: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        try {
+            graffitiProg.compileShader("shader/graffiti.vert");
+            graffitiProg.compileShader("shader/graffiti.frag");
+            graffitiProg.link();
+            graffitiProg.printActiveUniforms();
+        }
+        catch (GLSLProgramException& e) {
+            std::cerr << "[ERROR] Graffiti Shader: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        try {
+            wireFrameProg.compileShader("shader/wireframe.vert");
+            wireFrameProg.compileShader("shader/wireframe.gs");
+            wireFrameProg.compileShader("shader/wireframe.frag");
+            wireFrameProg.link();
+            wireFrameProg.printActiveUniforms();
+        }
+        catch (GLSLProgramException& e) {
+            std::cerr << "[ERROR] Wireframe Shader: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        try {
+            textShader.compileShader("shader/text.vert");
+            textShader.compileShader("shader/text.frag");
+            textShader.link();
+            textShader.printActiveUniforms();
+        }
+        catch (GLSLProgramException& e) {
+            std::cerr << "[ERROR] Text Shader: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        try {
+            particleShader.compileShader("shader/particleFountain.vert");
+            particleShader.compileShader("shader/particleFountain.frag");
+            particleShader.link();
+            particleShader.printActiveUniforms();
+        }
+        catch (GLSLProgramException& e) {
+            std::cerr << "[ERROR] Particle Shader: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        try {
+            flatProg.compileShader("shader/flat_frag.glsl");
+            flatProg.compileShader("shader/flat_vert.glsl");
+            flatProg.link();
+            flatProg.printActiveUniforms();
+        }
+        
+	catch (GLSLProgramException &e) {
+        std::cerr << "[ERROR] Flat Shader: " << e.what() << std::endl;
 		exit(EXIT_FAILURE);
 	}
+
 }
 
 void SceneBasic_Uniform::update( float t )
 {
+    time = t;
+    emitterAngle = std::fmod(emitterAngle + 0.01f, glm::two_pi<float>());
     buttonProximity = false;
     if (animating()) {
         lightAngle += 1.0f * deltaTime;
@@ -502,10 +566,38 @@ void SceneBasic_Uniform::render()
         //run particle fountain
     }
 
+    //particle fountain
+    flatProg.use();
+    model = mat4(1.0f);
+    
+    mat4 mv = view * model;
+    flatProg.setUniform("ProjectionMatrix", projection);
+    flatProg.setUniform("ModelViewMatrix", mv);
+
+    glDepthMask(GL_FALSE);
+    //glDisable(GL_DEPTH_TEST);
+    particleShader.use();
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, particleTexID);
+
+    particleShader.setUniform("ProjectionMatrix", projection);
+    particleShader.setUniform("ModelViewMatrix", mv);
+    particleShader.setUniform("Time", time);
+
+    glBindVertexArray(particles);
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, nParticles);
+    glBindVertexArray(0);
+    
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+
+
     float currentTime = glfwGetTime();
     deltaTime = currentTime - lastTime;
     lastTime = currentTime;
     glFinish();
+    
 }
 
 void SceneBasic_Uniform::resize(int w, int h)
@@ -621,6 +713,72 @@ void SceneBasic_Uniform::setupFBO() {
     glDrawBuffers(2, drawBuffers);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+}
+
+void SceneBasic_Uniform::initBuffers()
+{
+    glGenBuffers(1, &initVel);
+    glGenBuffers(1, &startTime);
+
+    int size = nParticles * sizeof(float);
+    glBindBuffer(GL_ARRAY_BUFFER, initVel);
+    glBufferData(GL_ARRAY_BUFFER, size * 3, 0, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, startTime);
+    glBufferData(GL_ARRAY_BUFFER, size, 0, GL_STATIC_DRAW);
+
+    glm::mat3 emitterBasis = ParticleUtils::makeArbitraryBasis(emitterDir);
+    vec3 v(0.0f);
+    float velocity, theta, phi;
+    std::vector<GLfloat> data(nParticles * 3);
+    for (uint32_t i = 0; i < nParticles;i++) {
+
+        theta = glm::mix(0.0f, glm::pi<float>() / 20.0f, randFloat());
+        phi = glm::mix(0.0f, glm::two_pi<float>(), randFloat());
+
+        v.x = sinf(theta) * cosf(phi);
+        v.y = cosf(theta);
+        v.z = sinf(theta) * sinf(phi);
+
+        velocity = glm::mix(1.25f, 1.5f, randFloat());
+        v = glm::normalize(emitterBasis * v)*velocity;
+
+        data[3 * i] = v.x;
+        data[3 * i + 1] = v.y;
+        data[3 * i + 2] = v.z;
+
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, initVel);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, size * 3, data.data());
+
+    float rate = particleLifetime / nParticles;
+    for (int i = 0;i < nParticles;i++) {
+        data[i] = rate * i;
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, startTime);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, nParticles * sizeof(float), data.data());
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glGenVertexArrays(1, &particles);
+    glBindVertexArray(particles);
+    glBindBuffer(GL_ARRAY_BUFFER, initVel);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, startTime);
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(1);
+
+    glVertexAttribDivisor(0, 1);
+    glVertexAttribDivisor(1, 1);
+
+    glBindVertexArray(0);
+
+}
+
+float SceneBasic_Uniform::randFloat()
+{
+    return rand.nextFloat();
 }
 
 void SceneBasic_Uniform::renderText(const std::string& text, float x, float y, float scale)

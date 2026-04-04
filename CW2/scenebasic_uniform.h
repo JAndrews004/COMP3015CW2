@@ -11,6 +11,8 @@
 #include "helper/plane.h"
 #include "helper/objmesh.h"
 #include "helper/skybox.h"
+#include "helper/random.h"
+#include "helper/particleutils.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -93,8 +95,14 @@ private:
     GLSLProgram graffitiProg;
     GLSLProgram wireFrameProg;
     GLSLProgram textShader;
+    GLSLProgram particleShader,flatProg;
     glm::mat4 viewport;
 
+    Random rand;
+
+    GLuint initVel, startTime, particles, nParticles;
+    glm::vec3 emitterPos, emitterDir;
+    float emitterAngle, time, particleLifetime;
 
     Plane plane;
     std::unique_ptr<ObjMesh> mesh;
@@ -134,6 +142,7 @@ private:
 
     GLuint statueTexID, statueNormID, blankMaskID, graffitiID;
     GLuint floorTexID, mossTexID, floorNormID, puddleMaskID;
+    GLuint particleTexID;
 
     bool buttonProximity = true;
     std::vector<Button> buttons = { Button(glm::vec3(0.0f),0.5f),Button(glm::vec3(1.0f),0.5f),Button(glm::vec3(-1.0f),0.5f) ,Button(glm::vec3(1.0f,0.0f,-1.0f),0.5f) };
@@ -141,6 +150,8 @@ private:
     void compile();
     void setMatrices();
     void setupFBO();
+    void initBuffers();
+    float randFloat();
     void renderText(const std::string& text, float x, float y, float scale);
 public:
     SceneBasic_Uniform();
@@ -155,6 +166,8 @@ public:
     void handleMouseInput(double mouseX, double mouseY) override;
     void toggleFog() override;
     void toggleWireFrame() override;
+
+    
 };
 
 #endif // SCENEBASIC_UNIFORM_H

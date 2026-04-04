@@ -11,10 +11,10 @@ class GameManager {
 public:
 	gameState state = Searching;
 
-	bool lightToggles[4] = { true,true,false,true };
+	bool lightToggles[4] = { true,true,true,true };
 
 	void puzzleCheck() {
-		std::cout << "Checking puzzle" << std::endl;
+		//std::cout << "Checking puzzle" << std::endl;
 		bool puzzleTrue = true;
 		for (int i = 0;i < 4;i++) {
 			if (lightToggles[i] != puzzleAnswer[i]) {
@@ -24,7 +24,7 @@ public:
 		}
 
 		if (puzzleTrue) {
-			std::cout << "puzzle match" << std::endl;
+			//std::cout << "puzzle match" << std::endl;
 			state = Solved;
 		}
 	}
