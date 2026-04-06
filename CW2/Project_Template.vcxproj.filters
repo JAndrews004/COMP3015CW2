@@ -107,6 +107,12 @@
     <None Include="shader\flat_vert.glsl">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shader\shadow.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader\shadow.frag">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\scene.h">

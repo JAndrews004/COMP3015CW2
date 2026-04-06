@@ -8,17 +8,23 @@ in vec3 Tangent;
 in vec3 Bitangent;
 in vec3 NormalInterp;
 
+in vec3 FragPosWorld;
+
 layout (location = 0) out vec4 FragColor;
 layout (binding = 0) uniform sampler2D Tex1;
 layout (binding = 1) uniform sampler2D NormalMap;
 layout (binding = 2) uniform sampler2D Tex2;
 layout (binding = 3) uniform sampler2D puddleMask;
+layout (binding = 4) uniform sampler2D shadowMap;
+
+uniform mat4 LightSpaceMatrix;
 
 uniform struct LightInfo{
     vec4 Position;
     vec3 La;
     vec3 L;
-}lights[5];
+   
+}lights[4];
 
 uniform struct MaterialInfo{
     vec3 Kd;
@@ -34,7 +40,7 @@ uniform struct SpotLightInfo{
     vec3 Direction;
     float Exponent;
     float Cutoff;
-}Spot;
+}Spot[2];
 
 uniform struct FogInfo{
     vec3 color;
@@ -51,8 +57,10 @@ const float scaleFactor = 1.0/levels;
 vec3 blinnPhongModel(int light, vec3 position,vec3 n,vec3 texColour,MaterialInfo surface)
 {
     float distance = length(lights[light].Position.xyz - Position);
-    float attenuation = 1.0 / (1.0 + 0.2 * distance + 0.3 * distance*distance);
-    //float attenuation = 1.0;
+    float attenuation = 1.0 / (1.0 + 0.4 * distance + 0.5 * distance*distance);
+    if(light==3){
+     attenuation = 1.0;
+     }
     vec3 ambient = lights[light].La * surface.Ka * texColour;
 
     vec3 s = normalize(vec3(lights[light].Position.xyz -position));
@@ -69,14 +77,14 @@ vec3 blinnPhongModel(int light, vec3 position,vec3 n,vec3 texColour,MaterialInfo
      return ambient + lights[light].L * diffuse + spec * lights[light].L;
      
 }
-vec3 blinPhongSpotModel(vec3 position, vec3 n,vec3 texColour,MaterialInfo surface)
+vec3 blinPhongSpotModel(int i,vec3 position, vec3 n,vec3 texColour,MaterialInfo surface)
 {
-    float distance = length(Spot.Position.xyz - Position);
+    float distance = length(Spot[i].Position.xyz - Position);
     float attenuation = 1.0 / (1.0 + 0.12 * distance + 0.16 * distance*distance);
 
-    vec3 s =  normalize(Spot.Position.xyz - position);
+    vec3 s =  normalize(Spot[i].Position.xyz - position);
 
-    float cosAng = dot(-s,normalize(Spot.Direction));
+    float cosAng = dot(-s,normalize(Spot[i].Direction));
     
     float angle = acos(cosAng);
     float sDotN = max(dot(s,n),0.0);
@@ -86,9 +94,9 @@ vec3 blinPhongSpotModel(vec3 position, vec3 n,vec3 texColour,MaterialInfo surfac
     vec3 spec = vec3(0.0);
     
 
-    if(angle < Spot.Cutoff)
+    if(angle < Spot[i].Cutoff)
     {
-        spotScale = pow(cosAng,Spot.Exponent);
+        spotScale = pow(cosAng,Spot[i].Exponent);
         
         diffuse = surface.Kd  *sDotN * texColour * attenuation;
        
@@ -99,10 +107,39 @@ vec3 blinPhongSpotModel(vec3 position, vec3 n,vec3 texColour,MaterialInfo surfac
             spec = surface.Ks * pow(max(dot(n, h), 0.0), surface.Shininess) * attenuation;
         }
     }
-    vec3 ambient = Spot.La * surface.Ka * texColour * attenuation;
+    vec3 ambient = Spot[i].La * surface.Ka * texColour * attenuation;
 
-    return ambient + spotScale * Spot.L * (diffuse + spec);
+    return ambient + spotScale * Spot[i].L * (diffuse + spec);
 
+}
+
+float ShadowCalculation(vec3 fragPosWorld)
+{
+    vec4 fragPosLightSpace = LightSpaceMatrix * vec4(fragPosWorld, 1.0);
+
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    projCoords = projCoords * 0.5 + 0.5;
+
+    if(projCoords.z > 1.0)
+        return 0.0;
+
+    float bias = 0.002;
+    float shadow = 0.0;
+
+    vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+
+    for(int x = -1; x <= 1; ++x)
+    {
+        for(int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            shadow += (projCoords.z > pcfDepth + bias) ? 1.0 : 0.0;
+        }
+    }
+
+    shadow /= 9.0;
+
+    return shadow;
 }
 
 void main() {
@@ -138,14 +175,24 @@ void main() {
     vec3 darkGrey = vec3(0.1, 0.1, 0.1);
     texColour = mix(texColour,darkGrey,wetness);
 
-    texColour = pow(texColour,vec3(0.45)); // gamma correction
+    
 
     vec3 maskRGB = texture(puddleMask, TexCoord).rgb;
-    for(int i =0;i<5;i++)
+
+    float shadow = ShadowCalculation(FragPosWorld);
+
+    for(int i =0;i<4;i++)
     {
         lighting += blinnPhongModel(i,Position,n,texColour,surface);
     }
-    lighting += blinPhongSpotModel(Position,n,texColour,surface);
+    for(int i =0; i<2;i++){
+        vec3 result = blinPhongSpotModel(i,Position,n,texColour,surface);
+        if(i==1){
+            result *= (1.0 - shadow);
+        }
+        lighting += result;
+    }
+    
 
     
     float fragDistance = abs(Position.z);
@@ -158,7 +205,7 @@ void main() {
     else
         finalColour = lighting;
 
+    finalColour = pow(finalColour,vec3(0.45)); // gamma correction
     FragColor = vec4(finalColour, 1.0);
-    //FragColor = vec4(lighting, 1.0);
-
+    
 }

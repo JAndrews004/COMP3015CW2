@@ -12,6 +12,9 @@ out vec3 Bitangent;
 out vec3 NormalInterp;
 out vec2 TexCoord;
 
+out vec3 FragPosWorld;
+
+uniform mat4 ModelMatrix;
 uniform mat4 ModelViewMatrix;
 uniform mat4 ProjectionMatrix;
 uniform mat4 MVP;
@@ -26,6 +29,7 @@ void main()
     T = normalize(T - dot(T, N) * N);
     vec3 B = cross(N, T) * VertexTangent.w;
 
+    FragPosWorld = vec3(ModelMatrix * vec4(VertexPosition, 1.0));
     Tangent = T;
     Bitangent = B;
     NormalInterp = N;

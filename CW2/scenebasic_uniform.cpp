@@ -24,7 +24,7 @@ SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f,10.0f,100,100) ,angle(0.0
 {
     mesh = ObjMesh::load("media/Statue.obj", true,true); 
     gameManager = new GameManager();
-
+    
     
 }
 
@@ -35,14 +35,18 @@ void SceneBasic_Uniform::initScene()
     compile();
     glEnable(GL_DEPTH_TEST);
     setupFBO();
+
+   
+
     view = glm::lookAt(vec3(0.5f, 0.75f, 0.75f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     projection = glm::perspective(glm::radians(70.0f), 1.0f, 0.10f, 100.0f);
     
     prog.setUniform("lights[0].Position", view * glm::vec4(2.5f, 1.0f, 0.0f, 1.0f));
     prog.setUniform("lights[1].Position", view * glm::vec4(-1.25f, 1.0f, 2.165f, 1.0f));
     prog.setUniform("lights[2].Position", view * glm::vec4(-1.25f, 1.0f, -2.165f, 1.0f));
+    //prog.setUniform("lights[3].Position", view * glm::vec4(0.0f, 5.0f, 0.0f, 1.0f));
 
-    prog.setUniform("lights[3].Position", view * glm::vec4(0, 1.2f, 0, 1.0f));
+    prog.setUniform("Spot[1].Position", view * glm::vec4(0, 1.2f, 0, 1.0f));
     topLightPos = glm::vec4(0, 1.2f, 0, 1.0f);
     prog.setUniform("lights[4].Position", view * glm::vec4(0.0f, 5.0f, 0.0f, 1.0f));
 
@@ -55,11 +59,13 @@ void SceneBasic_Uniform::initScene()
     prog.setUniform("lights[2].L", lightL[2]);
     prog.setUniform("lights[2].La", lightLa[2]);
     
-    prog.setUniform("lights[3].L", lightL[3]);
-    prog.setUniform("lights[3].La", lightLa[3]);
+    prog.setUniform("Spot[1].L", lightL[3]);
+    prog.setUniform("Spot[1].La", lightLa[3]);
+    prog.setUniform("Spot[1].Exponent", 1.0f);
+    prog.setUniform("Spot[1].Cutoff", glm::radians(30.0f));
     
-    prog.setUniform("lights[4].L", glm::vec3(0.0f,0.0f,0.0f));
-    prog.setUniform("lights[4].La", glm::vec3(0.07f,0.09f,0.15f));
+    prog.setUniform("lights[3].L", glm::vec3(0.0f,0.0f,0.0f));
+    prog.setUniform("lights[3].La", glm::vec3(0.2f,0.2f,0.2f));
 
     statueTexID = Texture::loadTexture("media/Gold.jpg");
     statueNormID = Texture::loadTexture("media/Gold_NormalMap.jpg");
@@ -79,8 +85,8 @@ void SceneBasic_Uniform::initScene()
 
     //prog.setUniform("Spot.L", lightL[4]);
     //prog.setUniform("Spot.La", lightLa[4]);
-    prog.setUniform("Spot.Exponent", 10.0f);
-    prog.setUniform("Spot.Cutoff", glm::radians(30.0f));
+    prog.setUniform("Spot[0].Exponent", 10.0f);
+    prog.setUniform("Spot[0].Cutoff", glm::radians(30.0f));
 
     /*
     graffitiProg.setUniform("Tex1", 0);
@@ -305,6 +311,15 @@ void SceneBasic_Uniform::compile()
         std::cerr << "[ERROR] Flat Shader: " << e.what() << std::endl;
 		exit(EXIT_FAILURE);
 	}
+    try  {
+        depthProg.compileShader("shader/shadow.vert");
+        depthProg.compileShader("shader/shadow.frag");
+        depthProg.link();
+    }
+    catch (GLSLProgramException& e) {
+        std::cerr << "[ERROR] Shadow Shader: " << e.what() << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
 }
 
@@ -316,11 +331,11 @@ void SceneBasic_Uniform::update( float t )
     if (animating()) {
         lightAngle += 1.0f * deltaTime;
 
-        topLightPos.x = 0.0f + 2.5f * cosf(lightAngle);
-        topLightPos.z = 0.0f + 2.5f * sinf(lightAngle);
-        topLightPos.y = 1.0f;
+        topLightPos.x = 0.0f + 0.0f * cosf(lightAngle);
+        topLightPos.z = 0.0f + 0.0f * sinf(lightAngle);
+        topLightPos.y = 3.5f;
     }
-
+    
     for (int i = 0; i < buttons.size();i++) {
         if (buttons[i].proximityCheck(position)) {
             buttonProximity = true;
@@ -336,21 +351,66 @@ void SceneBasic_Uniform::update( float t )
 void SceneBasic_Uniform::render()
 {
     if (!wireframe) {
+        //shadows
+        prog.use();
+        float sceneHalfSize = 1.5f; // slightly bigger than your AABB
+        glm::mat4 lightProjection = glm::ortho(
+            -sceneHalfSize, sceneHalfSize,
+            -sceneHalfSize, sceneHalfSize,
+            0.1f, 5.0f
+        );
+        glm::mat4 lightView = glm::lookAt(
+            glm::vec3(topLightPos),
+            glm::vec3(topLightPos) + glm::vec3(0,-1,0),
+            glm::vec3(0, 0, 1)
+        );
 
+        glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+        prog.setUniform("LightSpaceMatrix", lightSpaceMatrix);
+
+        glViewport(0, 0, SHADOW_SIZE, SHADOW_SIZE);
+        glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glCullFace(GL_FRONT);
+
+        depthProg.use();
+        depthProg.setUniform("LightSpaceMatrix", lightSpaceMatrix);
+        model = mat4(1.0f);
+        model = glm::translate(model, vec3(0.0f, 0.3f, 0.0f));
+        model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
+        depthProg.setUniform("ModelMatrix", model);
+        mesh->render();
+
+        model = mat4(1.0f);
+        model = glm::translate(model, vec3(0.0f, -0.45f, 0.0f));
+        depthProg.setUniform("ModelMatrix", model);
+        plane.render();
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glViewport(0, 0, width, height);
+
+        ///////
 
         prog.use();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        glActiveTexture(GL_TEXTURE4);
+        glBindTexture(GL_TEXTURE_2D, shadowTex);
+
+        prog.setUniform("shadowMap", 4);
+        prog.setUniform("LightSpaceMatrix", lightSpaceMatrix);
+        
         view = glm::lookAt(position, position + front, up);
 
         glm::vec4 spotPosView = view * glm::vec4(position, 1.0f);
         glm::vec3 spotDirView = glm::mat3(view) * front;
 
-        prog.setUniform("Spot.Position", spotPosView);
-        prog.setUniform("Spot.Direction", glm::normalize(spotDirView));
+        prog.setUniform("Spot[0].Position", spotPosView);
+        prog.setUniform("Spot[0].Direction", glm::normalize(spotDirView));
 
-        prog.setUniform("lights[3].Position", view * topLightPos);
+        prog.setUniform("Spot[1].Position", view * topLightPos);
+        prog.setUniform("Spot[1].Direction", glm::mat3(view)*glm::vec3(0,-1,0));
 
         prog.setUniform("Material.Kd", glm::vec3(0.8f, 0.65f, 0.2f));
         prog.setUniform("Material.Ka", glm::vec3(0.1f, 0.07f, 0.02f));
@@ -365,6 +425,17 @@ void SceneBasic_Uniform::render()
 
 
         for (int i = 0; i < 4; i++) {
+            if (i == 3) {
+                if (toggles[i] == 0) {
+                    prog.setUniform("Spot[1].L", glm::vec3(0.0f));
+                    prog.setUniform("Spot[1].La", glm::vec3(0.0f));
+                }
+                else {
+                    prog.setUniform("Spot[1].L", lightL[3]);
+                    prog.setUniform("Spot[1].La", lightLa[3]);
+                }
+                break;
+            }
             if (toggles[i] == 0) {
                 std::stringstream nameL;
                 nameL << "lights[" << i << "].L";
@@ -383,19 +454,19 @@ void SceneBasic_Uniform::render()
             }
         }
         if (toggles[4] == 0) {
-            prog.setUniform("Spot.L", glm::vec3(0.0f, 0.0f, 0.0f));
-            prog.setUniform("Spot.La", glm::vec3(0.0f, 0.0f, 0.0f));
+            prog.setUniform("Spot[0].L", glm::vec3(0.0f, 0.0f, 0.0f));
+            prog.setUniform("Spot[0].La", glm::vec3(0.0f, 0.0f, 0.0f));
         }
         else {
-            prog.setUniform("Spot.L", lightL[4]);
-            prog.setUniform("Spot.La", lightLa[4]);
+            prog.setUniform("Spot[0].L", lightL[4]);
+            prog.setUniform("Spot[0].La", lightLa[4]);
         }
 
         model = mat4(1.0f);
         model = glm::translate(model, vec3(0.0f, 0.3f, 0.0f));
         model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
         setMatrices();
-
+        
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, statueTexID);
@@ -617,6 +688,7 @@ void SceneBasic_Uniform::setMatrices() {
     prog.setUniform("ModelViewMatrix", mv);
     prog.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
     prog.setUniform("MVP",  projection* mv);
+    prog.setUniform("ModelMatrix", model);
 
 }
 
@@ -692,26 +764,42 @@ void SceneBasic_Uniform::toggleWireFrame() {
 }
 
 void SceneBasic_Uniform::setupFBO() {
-    GLuint depthBuf;
+    
+    GLfloat border[] = { 1.0f,0.0f,0.0f,0.0f };
 
-    glGenFramebuffers(1, &hdrFBO);
-    glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
-    glGenRenderbuffers(1, &depthBuf);
-    glBindRenderbuffer(GL_RENDERBUFFER, depthBuf);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-    glActiveTexture(GL_TEXTURE0);
-    glGenTextures(1, &hdrTex);
-    glBindTexture(GL_TEXTURE_2D, hdrTex);
-    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, width, height);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glGenTextures(1, &shadowTex);
+    glBindTexture(GL_TEXTURE_2D, shadowTex);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT24, SHADOW_SIZE, SHADOW_SIZE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LESS);
 
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuf);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, hdrTex, 0);
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, shadowTex);
 
-    GLenum drawBuffers[] = { GL_NONE,GL_COLOR_ATTACHMENT0 };
-    glDrawBuffers(2, drawBuffers);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glGenFramebuffers(1, &shadowFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowTex, 0);
+
+    GLenum drawBuffers[] = { GL_NONE };
+    glDrawBuffers(1, drawBuffers);
+
+    GLenum result = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (result == GL_FRAMEBUFFER_COMPLETE) {
+        std::cout << "Framebuffer is complete." << std::endl;
+
+    }
+    else {
+        cerr << "Framebuffer not complete." << std::endl;
+    }
+
+    
+
 
 }
 

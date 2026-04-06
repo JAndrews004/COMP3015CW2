@@ -1,10 +1,12 @@
-﻿  scenebasic_uniform.cpp
-C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(226,13): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(227,13): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(596,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(610,28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(610,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(667,34): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(668,36): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(754,22): warning C4018: '<': signed/unsigned mismatch
+﻿  main.cpp
+  scenebasic_uniform.cpp
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(232,13): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(233,13): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(667,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(681,28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(681,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(739,34): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(740,36): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\scenebasic_uniform.cpp(842,22): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
   Project_Template.vcxproj -> C:\Users\ja990\Comp 3000\COMP3015CW2\CW2\x64\Debug\Project_Template.exe

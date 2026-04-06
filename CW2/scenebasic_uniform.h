@@ -80,6 +80,7 @@ struct Button {
     }
 };
 
+
 class SceneBasic_Uniform : public Scene
 {
 private:
@@ -96,6 +97,7 @@ private:
     GLSLProgram wireFrameProg;
     GLSLProgram textShader;
     GLSLProgram particleShader,flatProg;
+    GLSLProgram depthProg;
     glm::mat4 viewport;
 
     Random rand;
@@ -136,9 +138,9 @@ private:
     float lightAngle =0;
     bool movingPositive = true;
     int toggles[5] = { 1, 1, 1, 1 ,0 };
-    glm::vec3 lightL[5] = { glm::vec3(0.0f, 0.7f, 0.9f),glm::vec3(0.9f, 0.1f, 0.8f),glm::vec3(0.7f, 0.9f, 0.1f),glm::vec3(0.6f, 0.6f, 0.9f) ,glm::vec3(0.6f, 0.0f, 0.9f) };
+    glm::vec3 lightL[5] = { glm::vec3(0.0f, 0.35f, 0.45f),glm::vec3(0.45f, 0.05f, 0.4f),glm::vec3(0.35f, 0.45f, 0.05f),glm::vec3(0.5f, 0.5f, 0.8f) ,glm::vec3(0.6f, 0.0f, 0.9f) };
 
-    glm::vec3 lightLa[5] = { glm::vec3(0.3f, 0.3f, 0.3f),glm::vec3(0.3f, 0.3f, 0.3f),glm::vec3(0.3f, 0.3f, 0.3f),glm::vec3(0.4f, 0.4f, 0.4f) , glm::vec3(0.1f, 0.1f, 0.1f)};
+    glm::vec3 lightLa[5] = { glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.1f, 0.1f, 0.1f) , glm::vec3(0.1f, 0.1f, 0.1f)};
 
     GLuint statueTexID, statueNormID, blankMaskID, graffitiID;
     GLuint floorTexID, mossTexID, floorNormID, puddleMaskID;
@@ -146,6 +148,14 @@ private:
 
     bool buttonProximity = true;
     std::vector<Button> buttons = { Button(glm::vec3(0.0f),0.5f),Button(glm::vec3(1.0f),0.5f),Button(glm::vec3(-1.0f),0.5f) ,Button(glm::vec3(1.0f,0.0f,-1.0f),0.5f) };
+
+    //shadows
+    GLuint shadowFBO;
+    GLuint shadowTex;
+
+    const unsigned int SHADOW_SIZE = 1024;
+    float nearPlane = 0.1f;
+    float farPlane = 5.0f;
 
     void compile();
     void setMatrices();
