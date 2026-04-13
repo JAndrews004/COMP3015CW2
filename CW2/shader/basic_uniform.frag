@@ -19,6 +19,8 @@ layout (binding = 4) uniform sampler2D shadowMap;
 
 uniform mat4 LightSpaceMatrix;
 
+uniform float normScale;
+
 uniform struct LightInfo{
     vec4 Position;
     vec3 La;
@@ -57,7 +59,7 @@ const float scaleFactor = 1.0/levels;
 vec3 blinnPhongModel(int light, vec3 position,vec3 n,vec3 texColour,MaterialInfo surface)
 {
     float distance = length(lights[light].Position.xyz - Position);
-    float attenuation = 1.0 / (1.0 + 0.4 * distance + 0.5 * distance*distance);
+    float attenuation = 1.0 / (1.0 + 0.4 * distance + 0.9 * distance*distance);
     if(light==3){
      attenuation = 1.0;
      }
@@ -155,7 +157,7 @@ void main() {
    
 
     vec3 lighting = vec3(0.0f);
-    vec3 nMap = texture(NormalMap, TexCoord*NormalMapSF).rgb;
+    vec3 nMap = texture(NormalMap, TexCoord*normScale).rgb;
 
     nMap = normalize(nMap * 2.0 - 1.0); //Convert from [0,1] to [-1,1]
     vec3 n = normalize(TBN * nMap);
@@ -172,7 +174,7 @@ void main() {
     surface.Ks = mix(Material.Ks, vec3(0.7),wetness);
     surface.Shininess = 128;
 
-    vec3 darkGrey = vec3(0.1, 0.1, 0.1);
+    vec3 darkGrey = vec3(0.5, 0.5, 0.5);
     texColour = mix(texColour,darkGrey,wetness);
 
     

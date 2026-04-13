@@ -107,7 +107,10 @@ private:
     float emitterAngle, time, particleLifetime;
 
     Plane plane;
+    Plane wall;
     std::unique_ptr<ObjMesh> mesh;
+    std::unique_ptr<ObjMesh> plinth;
+    std::unique_ptr<ObjMesh> buttonObj;
     GLuint programHandle;
     GLuint location;
 
@@ -138,16 +141,17 @@ private:
     float lightAngle =0;
     bool movingPositive = true;
     int toggles[5] = { 1, 1, 1, 1 ,0 };
-    glm::vec3 lightL[5] = { glm::vec3(0.0f, 0.35f, 0.45f),glm::vec3(0.45f, 0.05f, 0.4f),glm::vec3(0.35f, 0.45f, 0.05f),glm::vec3(0.5f, 0.5f, 0.8f) ,glm::vec3(0.6f, 0.0f, 0.9f) };
+    glm::vec3 lightL[5] = { glm::vec3(0.0f, 0.0f, 1.0f),glm::vec3(1.0f, 0.1f, 0.2f),glm::vec3(0.0f, 0.9f, 0.1f),glm::vec3(0.25f, 0.25f, 0.4f) ,glm::vec3(0.6f, 0.0f, 0.9f) };
 
-    glm::vec3 lightLa[5] = { glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.1f, 0.1f, 0.1f) , glm::vec3(0.1f, 0.1f, 0.1f)};
+    glm::vec3 lightLa[5] = { glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.0f, 0.0f, 0.0f) , glm::vec3(0.1f, 0.1f, 0.1f)};
 
     GLuint statueTexID, statueNormID, blankMaskID, graffitiID;
     GLuint floorTexID, mossTexID, floorNormID, puddleMaskID;
     GLuint particleTexID;
+    GLuint plinthTex, buttonTex, wallTexID, wallNormID;;
 
     bool buttonProximity = true;
-    std::vector<Button> buttons = { Button(glm::vec3(0.0f),0.5f),Button(glm::vec3(1.0f),0.5f),Button(glm::vec3(-1.0f),0.5f) ,Button(glm::vec3(1.0f,0.0f,-1.0f),0.5f) };
+    std::vector<Button> buttons;
 
     //shadows
     GLuint shadowFBO;

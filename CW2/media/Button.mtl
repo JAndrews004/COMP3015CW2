@@ -1,0 +1,50 @@
+# Blender 4.4.0 MTL File: 'Button.blend'
+# www.blender.org
+
+newmtl Base
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Base_BaseColor.png
+map_Ns C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Base_Roughness.png
+map_refl C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Base_Metallic.png
+map_Bump -bm 1.000000 C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Base_Normal.png
+
+newmtl Button
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Button_BaseColor.png
+map_Ns C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Button_Roughness.png
+map_refl C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Button_Metallic.png
+map_Bump -bm 1.000000 C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Button_Normal.png
+
+newmtl ButtonBase
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_ButtonBase_BaseColor.png
+map_Ns C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_ButtonBase_Roughness.png
+map_refl C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_ButtonBase_Metallic.png
+map_Bump -bm 1.000000 C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_ButtonBase_Normal.png
+
+newmtl Screw
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Screw_BaseColor.png
+map_Ns C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Screw_Roughness.png
+map_refl C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Screw_Metallic.png
+map_Bump -bm 1.000000 C:/Users/ja990/Downloads/industrial-button/source/Button/Textures/Button_Screw_Normal.png

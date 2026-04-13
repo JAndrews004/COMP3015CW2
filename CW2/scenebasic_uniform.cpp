@@ -20,11 +20,13 @@ using glm::vec3;
 using glm::mat4;
 
 SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f,10.0f,100,100) ,angle(0.0f),tPrev(0.0f),rotSpeed(glm::pi<float>()/8.0f), sky(100.0f),textQuad(1600,800),
-            time(0),particleLifetime(8.5f), nParticles(800),emitterPos(1,0,0),emitterDir(0,3,-1)
+            time(0),particleLifetime(8.5f), nParticles(800),emitterPos(1,0,0),emitterDir(0,3,-1), wall(10.0f,5.0f,100,50)
 {
     mesh = ObjMesh::load("media/Statue.obj", true,true); 
+    plinth = ObjMesh::load("media/Plinth.obj", true, false);
+    buttonObj = ObjMesh::load("media/Button.obj", true, false);
     gameManager = new GameManager();
-    
+    buttons = { Button(glm::vec3(-3.0f,0.0f,4.5f),0.5f),Button(glm::vec3(-1.0f,0.0f,4.5f),0.5f),Button(glm::vec3(1.0f,0.0f,4.5f),0.5f) ,Button(glm::vec3(3.0f,0.0f,4.5f),0.5f) };
     
 }
 
@@ -41,9 +43,9 @@ void SceneBasic_Uniform::initScene()
     view = glm::lookAt(vec3(0.5f, 0.75f, 0.75f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     projection = glm::perspective(glm::radians(70.0f), 1.0f, 0.10f, 100.0f);
     
-    prog.setUniform("lights[0].Position", view * glm::vec4(2.5f, 1.0f, 0.0f, 1.0f));
-    prog.setUniform("lights[1].Position", view * glm::vec4(-1.25f, 1.0f, 2.165f, 1.0f));
-    prog.setUniform("lights[2].Position", view * glm::vec4(-1.25f, 1.0f, -2.165f, 1.0f));
+    prog.setUniform("lights[0].Position", view * glm::vec4(-3.0f, 0.5f, 4.5f, 1.0f));
+    prog.setUniform("lights[1].Position", view * glm::vec4(-1.0f, 0.5f, 4.5f, 1.0f));
+    prog.setUniform("lights[2].Position", view * glm::vec4(1.0f, 0.5f, 4.5f, 1.0f));
     //prog.setUniform("lights[3].Position", view * glm::vec4(0.0f, 5.0f, 0.0f, 1.0f));
 
     prog.setUniform("Spot[1].Position", view * glm::vec4(0, 1.2f, 0, 1.0f));
@@ -65,7 +67,7 @@ void SceneBasic_Uniform::initScene()
     prog.setUniform("Spot[1].Cutoff", glm::radians(30.0f));
     
     prog.setUniform("lights[3].L", glm::vec3(0.0f,0.0f,0.0f));
-    prog.setUniform("lights[3].La", glm::vec3(0.2f,0.2f,0.2f));
+    prog.setUniform("lights[3].La", glm::vec3(0.0f,0.0f,0.0f));
 
     statueTexID = Texture::loadTexture("media/Gold.jpg");
     statueNormID = Texture::loadTexture("media/Gold_NormalMap.jpg");
@@ -77,6 +79,11 @@ void SceneBasic_Uniform::initScene()
     mossTexID = Texture::loadTexture("media/Moss.png");
     puddleMaskID = Texture::loadTexture("media/PuddleMask.png");
     
+    plinthTex = Texture::loadTexture("media/PlinthTex.png");
+    buttonTex = Texture::loadTexture("media/ButtonTex.png");
+
+    wallTexID = Texture::loadTexture("media/bricks.jpg");
+    wallNormID = Texture::loadTexture("media/bricks_norm.png");
 
     prog.setUniform("Tex1", 0);
     prog.setUniform("NormalMapTex", 1); 
@@ -201,6 +208,44 @@ void SceneBasic_Uniform::initScene()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     glGenerateMipmap(GL_TEXTURE_2D);
 
+    glBindTexture(GL_TEXTURE_2D, plinthTex);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, buttonTex);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, wallTexID);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, wallNormID);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
     
 
     if (FT_Init_FreeType(&ft)) {
@@ -400,7 +445,7 @@ void SceneBasic_Uniform::render()
 
         prog.setUniform("shadowMap", 4);
         prog.setUniform("LightSpaceMatrix", lightSpaceMatrix);
-        
+        prog.setUniform("normScale", 2.0f);
         view = glm::lookAt(position, position + front, up);
 
         glm::vec4 spotPosView = view * glm::vec4(position, 1.0f);
@@ -507,6 +552,86 @@ void SceneBasic_Uniform::render()
 
         plane.render();
 
+        ///wall///
+
+        model = mat4(1.0f);
+        model = glm::translate(model, vec3(0.0f, 0.0f, 5.0f));
+        model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(1.0f));
+
+        prog.setUniform("normScale", 8.0f);
+
+        setMatrices();
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, wallTexID);
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, wallNormID);
+
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, wallTexID);
+
+        glActiveTexture(GL_TEXTURE3);
+        glBindTexture(GL_TEXTURE_2D, blankMaskID);
+
+        prog.setUniform("Material.Kd", glm::vec3(0.5f, 0.5f, 0.5f));
+        prog.setUniform("Material.Ka", glm::vec3(0.1f, 0.07f, 0.02f));
+        prog.setUniform("Material.Ks", glm::vec3(0.1f, 0.1f, 0.1f));
+        prog.setUniform("Material.Shininess", 50.0f);
+
+        wall.render();
+
+        ///plinth and button///
+        for (int i = 0; i < 4; i++) {
+            model = mat4(1.0f);
+            model = glm::translate(model, vec3(-5.0f + 2.0f * (i + 1), 0.08f, 4.5f));
+            model = glm::scale(model, glm::vec3(25.0f));
+            setMatrices();
+            prog.setUniform("Material.Kd", glm::vec3(0.5f, 0.5f, 0.5f));
+            prog.setUniform("Material.Ka", glm::vec3(0.1f, 0.07f, 0.02f));
+            prog.setUniform("Material.Ks", glm::vec3(0.1f, 0.1f, 0.1f));
+            prog.setUniform("Material.Shininess", 50.0f);
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, plinthTex);
+
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, floorNormID);
+
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, plinthTex);
+
+            glActiveTexture(GL_TEXTURE3);
+            glBindTexture(GL_TEXTURE_2D, blankMaskID);
+
+            plinth->render();
+
+            model = mat4(1.0f);
+            model = glm::translate(model, vec3(-5.0f + 2.0f * (i+1), 0.7f, 4.5f));
+            model = glm::scale(model, glm::vec3(0.04f));
+            setMatrices();
+            prog.setUniform("Material.Kd", glm::vec3(0.5f, 0.5f, 0.5f));
+            prog.setUniform("Material.Ka", glm::vec3(0.1f, 0.07f, 0.02f));
+            prog.setUniform("Material.Ks", glm::vec3(0.4f, 0.4f, 0.4f));
+            prog.setUniform("Material.Shininess", 280.0f);
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, buttonTex);
+
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, floorNormID);
+
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, buttonTex);
+
+            glActiveTexture(GL_TEXTURE3);
+            glBindTexture(GL_TEXTURE_2D, blankMaskID);
+
+            buttonObj->render();
+        }
+        
+
         //graffiti 
         graffitiProg.use();
         model = mat4(1.0f);
@@ -549,6 +674,8 @@ void SceneBasic_Uniform::render()
 
 
         mesh->render();
+
+        
 
         //skybox
         glDepthMask(GL_FALSE);
@@ -634,31 +761,31 @@ void SceneBasic_Uniform::render()
     //check if puzzle is solved
     gameManager->puzzleCheck();
     if (gameManager->state == Solved) {
-        //run particle fountain
+        //particle fountain
+        flatProg.use();
+        model = mat4(1.0f);
+
+        mat4 mv = view * model;
+        flatProg.setUniform("ProjectionMatrix", projection);
+        flatProg.setUniform("ModelViewMatrix", mv);
+
+        glDepthMask(GL_FALSE);
+        //glDisable(GL_DEPTH_TEST);
+        particleShader.use();
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, particleTexID);
+
+        particleShader.setUniform("ProjectionMatrix", projection);
+        particleShader.setUniform("ModelViewMatrix", mv);
+        particleShader.setUniform("Time", time);
+
+        glBindVertexArray(particles);
+        glDrawArraysInstanced(GL_TRIANGLES, 0, 6, nParticles);
+        glBindVertexArray(0);
+
     }
 
-    //particle fountain
-    flatProg.use();
-    model = mat4(1.0f);
-    
-    mat4 mv = view * model;
-    flatProg.setUniform("ProjectionMatrix", projection);
-    flatProg.setUniform("ModelViewMatrix", mv);
-
-    glDepthMask(GL_FALSE);
-    //glDisable(GL_DEPTH_TEST);
-    particleShader.use();
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, particleTexID);
-
-    particleShader.setUniform("ProjectionMatrix", projection);
-    particleShader.setUniform("ModelViewMatrix", mv);
-    particleShader.setUniform("Time", time);
-
-    glBindVertexArray(particles);
-    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, nParticles);
-    glBindVertexArray(0);
     
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
