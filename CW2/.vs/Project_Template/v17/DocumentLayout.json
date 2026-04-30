@@ -1,22 +1,30 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\",
+  "WorkspaceRootPath": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\scenebasic_uniform.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:scenebasic_uniform.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\wireframe.gs||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:shader\\wireframe.gs||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\scenebasic_uniform.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\wireframe.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:shader\\wireframe.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\scenebasic_uniform.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:scenebasic_uniform.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\shader\\basic_uniform.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:shader\\basic_uniform.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\GameManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:GameManager.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\shader\\shadow.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:shader\\shadow.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\particleFountain.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:shader\\particleFountain.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\basic_uniform.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:shader\\basic_uniform.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,58 +34,119 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 6,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "basic_uniform.frag",
-              "DocumentMoniker": "C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\shader\\basic_uniform.frag",
-              "RelativeDocumentMoniker": "shader\\basic_uniform.frag",
-              "ToolTip": "C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\shader\\basic_uniform.frag",
-              "RelativeToolTip": "shader\\basic_uniform.frag",
-              "ViewState": "AgIAAJMAAAAAAAAAAAAAAJ8AAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-13T16:21:25.417Z",
+              "DocumentIndex": 3,
+              "Title": "GameManager.cpp",
+              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\GameManager.cpp",
+              "RelativeDocumentMoniker": "GameManager.cpp",
+              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\GameManager.cpp",
+              "RelativeToolTip": "GameManager.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-04-30T14:18:45.915Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "scenebasic_uniform.cpp",
-              "DocumentMoniker": "C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\scenebasic_uniform.cpp",
+              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\scenebasic_uniform.cpp",
               "RelativeDocumentMoniker": "scenebasic_uniform.cpp",
-              "ToolTip": "C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\scenebasic_uniform.cpp",
+              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\scenebasic_uniform.cpp",
               "RelativeToolTip": "scenebasic_uniform.cpp",
-              "ViewState": "AgIAABYCAAAAAAAAAAAqwDECAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAIkBAAAAAAAAAAAAAK8BAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-04-04T10:49:22.405Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "scenebasic_uniform.h",
-              "DocumentMoniker": "C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\scenebasic_uniform.h",
-              "RelativeDocumentMoniker": "scenebasic_uniform.h",
-              "ToolTip": "C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\scenebasic_uniform.h",
-              "RelativeToolTip": "scenebasic_uniform.h",
-              "ViewState": "AgIAAIAAAAAAAAAAAAAAAJEAAAB+AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-04-05T09:51:38.678Z",
+              "DocumentIndex": 5,
+              "Title": "basic_uniform.frag",
+              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\basic_uniform.frag",
+              "RelativeDocumentMoniker": "shader\\basic_uniform.frag",
+              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\basic_uniform.frag",
+              "RelativeToolTip": "shader\\basic_uniform.frag",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAAAJ8AAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-30T13:03:53.292Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "shadow.vert",
-              "DocumentMoniker": "C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\shader\\shadow.vert",
-              "RelativeDocumentMoniker": "shader\\shadow.vert",
-              "ToolTip": "C:\\Users\\ja990\\Comp 3000\\COMP3015CW2\\CW2\\shader\\shadow.vert",
-              "RelativeToolTip": "shader\\shadow.vert",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "wireframe.gs",
+              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\wireframe.gs",
+              "RelativeDocumentMoniker": "shader\\wireframe.gs",
+              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\wireframe.gs",
+              "RelativeToolTip": "shader\\wireframe.gs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-05T15:17:56.238Z"
+              "WhenOpened": "2026-04-30T13:10:55.293Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "wireframe.frag",
+              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\wireframe.frag",
+              "RelativeDocumentMoniker": "shader\\wireframe.frag",
+              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\wireframe.frag",
+              "RelativeToolTip": "shader\\wireframe.frag",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-30T13:10:48.112Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "particleFountain.vert",
+              "DocumentMoniker": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\particleFountain.vert",
+              "RelativeDocumentMoniker": "shader\\particleFountain.vert",
+              "ToolTip": "C:\\Users\\ja990\\OneDrive\\Documents\\GitHub\\COMP3015CW2\\CW2\\shader\\particleFountain.vert",
+              "RelativeToolTip": "shader\\particleFountain.vert",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-30T13:07:19.549Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
             }
           ]
         }

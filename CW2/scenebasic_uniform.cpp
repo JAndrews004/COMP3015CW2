@@ -20,13 +20,13 @@ using glm::vec3;
 using glm::mat4;
 
 SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f,10.0f,100,100) ,angle(0.0f),tPrev(0.0f),rotSpeed(glm::pi<float>()/8.0f), sky(100.0f),textQuad(1600,800),
-            time(0),particleLifetime(8.5f), nParticles(800),emitterPos(1,0,0),emitterDir(0,3,-1), wall(10.0f,5.0f,100,50)
+            time(0),particleLifetime(8.5f), nParticles(80000),emitterPos(1,-1,0),emitterDir(0,3,-1), wall(10.0f,5.0f,100,50)
 {
     mesh = ObjMesh::load("media/Statue.obj", true,true); 
     plinth = ObjMesh::load("media/Plinth.obj", true, false);
     buttonObj = ObjMesh::load("media/Button.obj", true, false);
     gameManager = new GameManager();
-    buttons = { Button(glm::vec3(-3.0f,0.0f,4.5f),0.5f),Button(glm::vec3(-1.0f,0.0f,4.5f),0.5f),Button(glm::vec3(1.0f,0.0f,4.5f),0.5f) ,Button(glm::vec3(3.0f,0.0f,4.5f),0.5f) };
+    buttons = { Button(glm::vec3(-4.5f,0.0f,-4.5f),0.5f),Button(glm::vec3(-4.5f,0.0f,4.5f),0.5f),Button(glm::vec3(4.5f,0.0f,4.5f),0.5f) ,Button(glm::vec3(4.5f,0.0f,-4.5f),0.5f) };
     
 }
 
@@ -43,9 +43,9 @@ void SceneBasic_Uniform::initScene()
     view = glm::lookAt(vec3(0.5f, 0.75f, 0.75f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     projection = glm::perspective(glm::radians(70.0f), 1.0f, 0.10f, 100.0f);
     
-    prog.setUniform("lights[0].Position", view * glm::vec4(-3.0f, 0.5f, 4.5f, 1.0f));
-    prog.setUniform("lights[1].Position", view * glm::vec4(-1.0f, 0.5f, 4.5f, 1.0f));
-    prog.setUniform("lights[2].Position", view * glm::vec4(1.0f, 0.5f, 4.5f, 1.0f));
+    prog.setUniform("lights[0].Position", view * glm::vec4(-4.5f, 0.5f, -4.5f, 1.0f));
+    prog.setUniform("lights[1].Position", view * glm::vec4(-4.5f, 0.5f, 4.5f, 1.0f));
+    prog.setUniform("lights[2].Position", view * glm::vec4(4.5f, 0.5f, 4.5f, 1.0f));
     //prog.setUniform("lights[3].Position", view * glm::vec4(0.0f, 5.0f, 0.0f, 1.0f));
 
     prog.setUniform("Spot[1].Position", view * glm::vec4(0, 1.2f, 0, 1.0f));
@@ -398,7 +398,7 @@ void SceneBasic_Uniform::render()
     if (!wireframe) {
         //shadows
         prog.use();
-        float sceneHalfSize = 1.5f; // slightly bigger than your AABB
+        float sceneHalfSize = 1.5f; 
         glm::mat4 lightProjection = glm::ortho(
             -sceneHalfSize, sceneHalfSize,
             -sceneHalfSize, sceneHalfSize,
@@ -553,15 +553,8 @@ void SceneBasic_Uniform::render()
         plane.render();
 
         ///wall///
-
-        model = mat4(1.0f);
-        model = glm::translate(model, vec3(0.0f, 0.0f, 5.0f));
-        model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(1.0f));
-
+        
         prog.setUniform("normScale", 8.0f);
-
-        setMatrices();
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, wallTexID);
@@ -580,12 +573,27 @@ void SceneBasic_Uniform::render()
         prog.setUniform("Material.Ks", glm::vec3(0.1f, 0.1f, 0.1f));
         prog.setUniform("Material.Shininess", 50.0f);
 
-        wall.render();
+        for (int i = 0; i < 4; i++) {
+            model = mat4(1.0f);
+
+            model = glm::translate(model, wallPositions[i]);
+
+            model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
+
+            model = glm::rotate(model, glm::radians(yRotations[i]), vec3(0.0f, 0.0f, 1.0f));
+
+            model = glm::scale(model, vec3(1.0f));
+
+            setMatrices();
+
+            wall.render();
+        }
+        
 
         ///plinth and button///
         for (int i = 0; i < 4; i++) {
             model = mat4(1.0f);
-            model = glm::translate(model, vec3(-5.0f + 2.0f * (i + 1), 0.08f, 4.5f));
+            model = glm::translate(model, buttonPositions[i]);
             model = glm::scale(model, glm::vec3(25.0f));
             setMatrices();
             prog.setUniform("Material.Kd", glm::vec3(0.5f, 0.5f, 0.5f));
@@ -608,7 +616,8 @@ void SceneBasic_Uniform::render()
             plinth->render();
 
             model = mat4(1.0f);
-            model = glm::translate(model, vec3(-5.0f + 2.0f * (i+1), 0.7f, 4.5f));
+            model = glm::translate(model, buttonPositions[i]);
+            model = glm::translate(model, vec3(0.0f, 0.62f, 0.0f));
             model = glm::scale(model, glm::vec3(0.04f));
             setMatrices();
             prog.setUniform("Material.Kd", glm::vec3(0.5f, 0.5f, 0.5f));
@@ -620,14 +629,13 @@ void SceneBasic_Uniform::render()
             glBindTexture(GL_TEXTURE_2D, buttonTex);
 
             glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, floorNormID);
+            glBindTexture(GL_TEXTURE_2D, blankMaskID);
 
             glActiveTexture(GL_TEXTURE2);
             glBindTexture(GL_TEXTURE_2D, buttonTex);
 
             glActiveTexture(GL_TEXTURE3);
             glBindTexture(GL_TEXTURE_2D, blankMaskID);
-
             buttonObj->render();
         }
         
@@ -739,6 +747,53 @@ void SceneBasic_Uniform::render()
         wireFrameProg.setUniform("ViewportMatrix", viewport);
 
         plane.render();
+
+        for (int i = 0; i < 4; i++) {
+            model = mat4(1.0f);
+            model = glm::translate(model, buttonPositions[i]);
+            model = glm::scale(model, glm::vec3(25.0f));
+
+            mv = view * model;
+            wireFrameProg.setUniform("ModelViewMatrix", mv);
+            wireFrameProg.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
+            wireFrameProg.setUniform("MVP", projection* mv);
+            wireFrameProg.setUniform("ViewportMatrix", viewport);
+
+        
+            plinth->render();
+
+            model = mat4(1.0f);
+            model = glm::translate(model, buttonPositions[i]);
+            model = glm::translate(model, vec3(0.0f, 0.62f, 0.0f));
+            model = glm::scale(model, glm::vec3(0.04f));
+
+            mv = view * model;
+            wireFrameProg.setUniform("ModelViewMatrix", mv);
+            wireFrameProg.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
+            wireFrameProg.setUniform("MVP", projection* mv);
+            wireFrameProg.setUniform("ViewportMatrix", viewport);
+            buttonObj->render();
+        }
+
+        for (int i = 0; i < 4; i++) {
+            model = mat4(1.0f);
+
+            model = glm::translate(model, wallPositions[i]);
+
+            model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
+
+            model = glm::rotate(model, glm::radians(yRotations[i]), vec3(0.0f, 0.0f, 1.0f));
+
+            model = glm::scale(model, vec3(1.0f));
+
+            mv = view * model;
+            wireFrameProg.setUniform("ModelViewMatrix", mv);
+            wireFrameProg.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
+            wireFrameProg.setUniform("MVP", projection* mv);
+            wireFrameProg.setUniform("ViewportMatrix", viewport);
+
+            wall.render();
+        }
     }
 
     // --- switch to orthographic projection for 2D text (Core OpenGL) ---
@@ -837,7 +892,7 @@ void SceneBasic_Uniform::checkButtonInput()
     }
 }
 void SceneBasic_Uniform::handleInput(int key) {
-    float vel = 0.5f * deltaTime;
+    float vel = 1.0f * deltaTime;
 
     if (key == GLFW_KEY_W)
         position += front * vel;

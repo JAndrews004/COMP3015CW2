@@ -59,7 +59,7 @@ const float scaleFactor = 1.0/levels;
 vec3 blinnPhongModel(int light, vec3 position,vec3 n,vec3 texColour,MaterialInfo surface)
 {
     float distance = length(lights[light].Position.xyz - Position);
-    float attenuation = 1.0 / (1.0 + 0.4 * distance + 0.9 * distance*distance);
+    float attenuation = 1.0 / (1.0 + 0.05 * distance + 0.08 * distance*distance);
     if(light==3){
      attenuation = 1.0;
      }
@@ -174,7 +174,7 @@ void main() {
     surface.Ks = mix(Material.Ks, vec3(0.7),wetness);
     surface.Shininess = 128;
 
-    vec3 darkGrey = vec3(0.5, 0.5, 0.5);
+    vec3 darkGrey = vec3(0.75, 0.75, 0.75);
     texColour = mix(texColour,darkGrey,wetness);
 
     

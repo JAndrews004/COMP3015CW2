@@ -11,7 +11,7 @@ class GameManager {
 public:
 	gameState state = Searching;
 
-	bool lightToggles[4] = { true,true,true,true };
+	bool lightToggles[4] = { false,false,false,true };
 
 	void puzzleCheck() {
 		//std::cout << "Checking puzzle" << std::endl;

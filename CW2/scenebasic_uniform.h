@@ -140,8 +140,8 @@ private:
     glm::vec4 topLightPos;
     float lightAngle =0;
     bool movingPositive = true;
-    int toggles[5] = { 1, 1, 1, 1 ,0 };
-    glm::vec3 lightL[5] = { glm::vec3(0.0f, 0.0f, 1.0f),glm::vec3(1.0f, 0.1f, 0.2f),glm::vec3(0.0f, 0.9f, 0.1f),glm::vec3(0.25f, 0.25f, 0.4f) ,glm::vec3(0.6f, 0.0f, 0.9f) };
+    int toggles[5] = { 0, 0, 0, 1 ,0 };
+    glm::vec3 lightL[5] = { glm::vec3(0.0f, 0.0f, 0.5f),glm::vec3(0.8f, 0.1f, 0.2f),glm::vec3(0.0f, 0.9f, 0.1f),glm::vec3(0.5f, 0.5f, 0.8f) ,glm::vec3(0.3f, 0.0f, 0.45f) };
 
     glm::vec3 lightLa[5] = { glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.1f, 0.1f, 0.1f),glm::vec3(0.0f, 0.0f, 0.0f) , glm::vec3(0.1f, 0.1f, 0.1f)};
 
@@ -160,6 +160,26 @@ private:
     const unsigned int SHADOW_SIZE = 1024;
     float nearPlane = 0.1f;
     float farPlane = 5.0f;
+
+    glm::vec3 wallPositions[4] = {
+        glm::vec3(0.0f, 0.0f,  5.0f),  // top
+        glm::vec3(0.0f, 0.0f, -5.0f),  // bottom
+        glm::vec3(-5.0f, 0.0f, 0.0f),  // left
+        glm::vec3(5.0f, 0.0f, 0.0f)   // right
+    };
+    float yRotations[4] = {
+        0.0f,  // top
+        0.0f,  // bottom
+        -90.0f, // left
+        -90.0f  // right
+    };
+
+    glm::vec3 buttonPositions[4] = {
+        glm::vec3(-4.5f, 0.08f, -4.5f), // bottom-left
+        glm::vec3(-4.5f, 0.08f,  4.5f), // top-left
+        glm::vec3(4.5f, 0.08f, -4.5f), // bottom-right
+        glm::vec3(4.5f, 0.08f,  4.5f)  // top-right
+    };
 
     void compile();
     void setMatrices();

@@ -151,7 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Public\OpenGL\src\glad.c" />
+    <ClCompile Include="..\..\..\..\..\..\Public\OpenGL\src\glad.c" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="helper\glslprogram.cpp" />
     <ClCompile Include="helper\glutils.cpp" />
