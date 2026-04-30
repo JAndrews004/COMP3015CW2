@@ -80,15 +80,15 @@ The main addition to the base shader program is the addition of the shadow mappi
 The main use I had of generative AI for this project was to help plan what order to implement features to gain the maximum marks 
 early in case I ran out of time.
 
-![Use of AI 1](/ScreenShots/1)
+![Use of AI 1](./ScreenShots/1)
 
 I also used it to help when i ran into unkown errors such as a LINK2019 error to save time in the fixing process. To do this I pasted the error message and asked how to fix it and it gave me a quick guide that worked and now I know what the error is and how to fix it in the future. 
 
-![Use of AI 2](/ScreenShots/2)
+![Use of AI 2](./ScreenShots/2)
 
 Finally I used it to help me implement the UI elements as I have no experience with freetype or how to implement it into my project. There were also a lot of integration issues and issues with trying to get it to show the correct text properly.
 
-![Use of AI 3](/ScreenShots/3)
+![Use of AI 3](./ScreenShots/3)
 
 ### What Went Well
 Overall, I believe my implementations of techniques into my project were executed well. This is becuse it runs smoothly with no crashes and works reliably. I also think the implementation of the puzzle and game state manager was done in a way that supported the architecture and expanded the project. 
