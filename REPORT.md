@@ -80,11 +80,11 @@ The main addition to the base shader program is the addition of the shadow mappi
 The main use I had of generative AI for this project was to help plan what order to implement features to gain the maximum marks 
 early in case I ran out of time.
 
-![Use of AI 1](/ScreenShots/1.png)
+![Use of AI 1](ScreenShots/1.png)
 
 I also used it to help when i ran into unkown errors such as a LINK2019 error to save time in the fixing process. To do this I pasted the error message and asked how to fix it and it gave me a quick guide that worked and now I know what the error is and how to fix it in the future. 
 
-![Use of AI 2](./ScreenShots/02.png)
+![Use of AI 2](ScreenShots/02.png)
 
 Finally I used it to help me implement the UI elements as I have no experience with freetype or how to implement it into my project. There were also a lot of integration issues and issues with trying to get it to show the correct text properly.
 
