@@ -118,7 +118,7 @@ Statue arrow graffiti: https://www.hiclipart.com/free-transparent-background-png
 Skybox: https://polyhaven.com/a/shanghai_bund 
 Skybox to cubemap converter: https://hdri-to-cubemap-converter.vercel.app/
 
-Plinth model:
-Button model:
-Wall texture: 
-Wall normal map: 
+Plinth model:https://sketchfab.com/3d-models/plinth-a1fd3cf139ef47b2b3d64481eac36897
+Button model:https://sketchfab.com/3d-models/industrial-button-a7e7c1772d764c3b913cccac66932236
+Wall texture & normal map: https://everytexture.com/everytexture-com-stock-pavement-bricks-texture-00025/
+
